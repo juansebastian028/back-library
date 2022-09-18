@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Carrito;
+use App\Models\Favoritos;
 
 class FavoritosController extends Controller
 {
@@ -17,8 +17,8 @@ class FavoritosController extends Controller
     public function index()
     {
         //
-        $carrito = Carrito::all();
-        return response()->json($carrito);
+        $favoritos = Favoritos::with('libro','usuario')->get();
+        return response()->json($favoritos);
     }
 
     /**
