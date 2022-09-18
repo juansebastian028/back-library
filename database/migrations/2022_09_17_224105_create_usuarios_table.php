@@ -25,7 +25,7 @@ class CreateUsuariosTable extends Migration
             $table->string('email')->unique();
             $table->string('nombre_usuario')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('clave');
+            $table->string('password');
             $table->string('foto')->nullable();
             $table->boolean('noticias');
             $table->rememberToken();

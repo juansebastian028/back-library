@@ -35,7 +35,7 @@ class User extends Authenticatable
         'rol_id',
         'noticias',
         'nombre_usuario',
-        'clave',
+        'password',
         'foto'
     ];
     public $timestamps = false;
