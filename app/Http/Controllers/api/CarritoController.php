@@ -5,6 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Carrito;
+use App\Models\User;
+
+
 class CarritoController extends Controller
 {
     /**
@@ -15,6 +19,9 @@ class CarritoController extends Controller
     public function index()
     {
         //
+        $carrito = Carrito::with('libro','usuario')->get();
+        
+        return response()->json($carrito, 200);
     }
 
     /**
@@ -47,6 +54,21 @@ class CarritoController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showByUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Shopping cart not found.'
+            ], 403);
+        }
+
+        return ShoppingCart::select("carrito.id", "cantidad")
+        ->join('libros', 'carrito.libro_id', '=', 'libros.id')->where('carrito.usuario_id', '=', $id)
+        ->get();
     }
 
     /**

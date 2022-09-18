@@ -12,17 +12,16 @@ class Carrito extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'libro_id',
-        'usuario_id',
         'cantidad'
     ];
+    protected $table = 'carrito';
 
-    public function libros(){
-        return $this->hasMany(Libro::class);
+    public function libro(){
+        return $this->belongsTo(Libro::class);
     }
 
-    public function usuarios(){
-        return $this->hasMany(User::class);
+    public function usuario(){
+        return $this->belongsTo(User::class);
     }
     public $timestamps = false;
 }
