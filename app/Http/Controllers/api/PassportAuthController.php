@@ -26,7 +26,7 @@ class PassportAuthController extends Controller
             'rol_id'=> $request->rol_id,
             'noticias'=> $request->noticias,
             'nombre_usuario'=> $request->nombre_usuario,
-            'clave'=> bcrypt($request->clave),
+            'password'=> bcrypt($request->password),
             // 'foto'=> asset('/uploads/abc.jpg'),
             // 'foto'=> asset('/uploads/' . $img_name),
         ]);
@@ -43,12 +43,11 @@ class PassportAuthController extends Controller
 
     public function login(Request $request)
     {
-
         $data = $request->all();
   
-        $fieldType = filter_var($request->usuario, FILTER_VALIDATE_EMAIL) ? 'email' : 'usuario';
+        $fieldType = filter_var($request->usuario, FILTER_VALIDATE_EMAIL) ? 'email' : 'nombre_usuario';
 
-        if(Auth::attempt( [$fieldType=>$data['usuario'], 'clave' => $data['clave']] )){
+        if(Auth::attempt( [$fieldType=>$data['usuario'], 'password' => $data['password']] )){
             
             $user = Auth::user();
             $rol = $user->rol()->first();
