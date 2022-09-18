@@ -12,8 +12,8 @@ class Pedido extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'usuario_id',
-        'libro_id',
+        // 'usuario_id',
+        // 'libro_id',
         'cantidad',
         'precio',
         'fecha',
@@ -24,9 +24,9 @@ class Pedido extends Model
 
         
     public function libros(){
-        return $this->hasMany(Libro::class);
+        return $this->belongsTo(Libro::class);
     }
-    public function usuario(){
-        return $this->hasMany(User::class);
+    public function usuarios(){
+        return $this->belongsTo(User::class);
     }
 }

@@ -12,17 +12,17 @@ class Favoritos extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'usuario_id',
-        'libro_id'
+        // 'usuario_id',
+        // 'libro_id'
     ];
 
     
     public function libros(){
-        return $this->hasMany(Libro::class);
+        return $this->belongsTo(Libro::class);
     }
 
     public function usuarios(){
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public $timestamps = false;

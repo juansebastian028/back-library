@@ -13,8 +13,8 @@ class Reserva extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'usuario_id',
-        'libro_id',
+        // 'usuario_id',
+        // 'libro_id',
         'cantidad',
         'fecha_expira',
         'fecha_reserva'
@@ -22,9 +22,9 @@ class Reserva extends Model
     public $timestamps = false;
 
     public function libros(){
-        return $this->hasMany(Libro::class);
+        return $this->belongsTo(Libro::class);
     }
-    public function usuario(){
-        return $this->hasMany(User::class);
+    public function usuarios(){
+        return $this->belongsTo(User::class);
     }
 }
