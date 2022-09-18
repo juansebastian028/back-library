@@ -34,15 +34,15 @@ class Libro extends Model
         return $this->hasMany(Carrito::class);
     }
 
-    public function favoritos(){
+    public function favorito(){
         return $this->hasMany(Favoritos::class);
     }
 
-    public function pedidos(){
+    public function pedido(){
         return $this->hasMany(Pedidos::class);
     }
 
-    public function reservas(){
+    public function reserva(){
         return $this->hasMany(Pedidos::class);
     }
 }

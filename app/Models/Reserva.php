@@ -21,10 +21,10 @@ class Reserva extends Model
     ];
     public $timestamps = false;
 
-    public function libros(){
+    public function libro(){
         return $this->belongsTo(Libro::class);
     }
-    public function usuarios(){
+    public function usuario(){
         return $this->belongsTo(User::class);
     }
 }
