@@ -65,19 +65,19 @@ class User extends Authenticatable
     }
 
     public function carrito(){
-        return $this->belongsToMany(Carrito::class);
+        return $this->hasMany(Carrito::class);
     }
 
     public function pedidos(){
-        return $this->belongsToMany(Pedido::class);
+        return $this->hasMany(Pedido::class);
     }
 
     public function reservas(){
-        return $this->belongsToMany(Reserva::class);
+        return $this->hasMany(Reserva::class);
     }
 
     public function favoritos(){
-        return $this->belongsToMany(Favoritos::class);
+        return $this->hasMany(Favoritos::class);
     }
 
 }
