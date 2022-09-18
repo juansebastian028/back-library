@@ -17,8 +17,9 @@ class PedidoController extends Controller
     public function index()
     {
         //
-        $pedidos = Pedido::all();
-        return response()->json($pedidos);
+        $pedidos = Pedido::with('libro','usuario')->get();
+        
+        return response()->json($pedidos, 200);
     }
 
     /**

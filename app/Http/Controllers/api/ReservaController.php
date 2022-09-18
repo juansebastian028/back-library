@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Reserva;
+
 class ReservaController extends Controller
 {
     /**
@@ -15,8 +17,9 @@ class ReservaController extends Controller
     public function index()
     {
         //
-        $reservas = Reserva::all();
-        return response()->json($reservas);
+        $reservas = Reserva::with('libro','usuario')->get();
+        
+        return response()->json($reservas, 200);
     }
 
     /**
