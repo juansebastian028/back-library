@@ -34,8 +34,11 @@ Route::middleware(['auth:api', 'rol'])->group(function() {
     Route::middleware(['scope:client'])
     ->group(function() {
         Route::resource('/carrito', CarritoController::class);
+        Route::get('/carrito/usuario/{id}', [CarritoController::class,'showByUser']);
         Route::resource('/reservas', ReservaController::class);
+        Route::get('/reservas/usuario/{id}', [ReservaController::class,'showByUser']);
         Route::resource('/pedidos', PedidoController::class);
+        Route::get('/pedidos/usuario/{id}', [PedidoController::class,'showByUser']);
         Route::resource('/favoritos', FavoritosController::class);
         Route::get('/favoritos/usuario/{id}', [FavoritosController::class,'showByUser']);
         Route::get('/perfil', [UserController::class, 'show']);
