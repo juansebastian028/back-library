@@ -37,6 +37,7 @@ Route::middleware(['auth:api', 'rol'])->group(function() {
         Route::resource('/reservas', ReservaController::class);
         Route::resource('/pedidos', PedidoController::class);
         Route::resource('/favoritos', FavoritosController::class);
+        Route::get('/favoritos/usuario/{id}', [FavoritosController::class,'showByUser']);
         Route::get('/perfil', [UserController::class, 'show']);
     });
 
