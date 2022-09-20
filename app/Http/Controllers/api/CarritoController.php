@@ -43,6 +43,13 @@ class CarritoController extends Controller
     public function store(Request $request)
     {
         //
+        $carrito = Carrito::create([
+            'cantidad' => $request->cantidad,
+            'libro_id' => $request->libro_id,
+            'usuario_id' => $request->usuario_id
+        ]);
+
+        return response()->json($carrito, 200);
     }
 
     /**
@@ -62,11 +69,11 @@ class CarritoController extends Controller
             $user = User::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'message' => 'Shopping cart not found.'
+                'message' => 'Carrito no encotrado.'
             ], 403);
         }
 
-        return ShoppingCart::select("carrito.id", "cantidad")
+        return Carrito::select("carrito.id", "cantidad")
         ->join('libros', 'carrito.libro_id', '=', 'libros.id')->where('carrito.usuario_id', '=', $id)
         ->get();
     }
@@ -103,5 +110,14 @@ class CarritoController extends Controller
     public function destroy($id)
     {
         //
+        try {
+            $carrito = Carrito::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Carrito no encotrado.'
+            ], 403);
+        }
+        $carrito->delete();
+        return response()->json(['message'=>'Carrito eliminado correctamente.'], 200);
     }
 }
