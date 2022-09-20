@@ -13,8 +13,8 @@ class Reserva extends Model
 {
     use HasFactory;
     protected $fillable = [
-        // 'usuario_id',
-        // 'libro_id',
+        'usuario_id',
+        'libro_id',
         'cantidad',
         'fecha_expira',
         'fecha_reserva'

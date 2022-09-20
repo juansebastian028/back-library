@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Pedido;
+use App\Models\Libro;
 use App\Models\User;
 
 class PedidoController extends Controller
@@ -48,8 +49,13 @@ class PedidoController extends Controller
             'cantidad' => $request->cantidad,
             'precio' => $request->precio,
             'direccion' => $request->direccion,
-            'ciudad' => $request->ciudad,
-            'fecha' => $request->fecha,
+            'ciudad' => $request->ciudad
+        ]);
+
+        $libro = Libro::findOrFail($request->libro_id);
+
+        $libro->update([
+            'cantidad' => $libro->cantidad - $request->cantidad
         ]);
 
         return response()->json($pedido, 200);
@@ -76,8 +82,7 @@ class PedidoController extends Controller
             ], 403);
         }
 
-        return Pedido::select("pedidos.id", "cantidad", "precio", "direccion", "ciudad", "fecha")
-        ->join('libros', 'pedidos.libro_id', '=', 'libros.id')->where('pedidos.usuario_id', '=', $id)
+        return Pedido::with('libro')->where('pedidos.usuario_id', '=', $id)
         ->get();
     }
 

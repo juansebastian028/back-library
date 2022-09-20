@@ -20,7 +20,8 @@ class CreateCarritoTable extends Migration
             $table->foreign('libro_id')->references('id')->on('libros')->onDelete('set null');
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
             $table->integer('cantidad');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
