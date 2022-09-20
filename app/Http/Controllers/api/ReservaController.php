@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Reserva;
+use App\Models\User;
 
 class ReservaController extends Controller
 {
@@ -54,6 +55,22 @@ class ReservaController extends Controller
         //
     }
 
+    
+    public function showByUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Reserva no encotrado.'
+            ], 403);
+        }
+
+        return Pedido::select("reservas.id", "cantidad", "fecha_expira", "fecha_reserva")
+        ->join('libros', 'reservas.libro_id', '=', 'libros.id')->where('reservas.usuario_id', '=', $id)
+        ->get();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -86,5 +103,14 @@ class ReservaController extends Controller
     public function destroy($id)
     {
         //
+        try {
+            $reserva = Reserva::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Reserva no encotrada.'
+            ], 403);
+        }
+        $reserva->delete();
+        return response()->json(['message'=>'Reserva eliminada correctamente.'], 200);
     }
 }
