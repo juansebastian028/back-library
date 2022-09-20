@@ -73,8 +73,7 @@ class CarritoController extends Controller
             ], 403);
         }
 
-        return Carrito::select("carrito.id", "cantidad")
-        ->join('libros', 'carrito.libro_id', '=', 'libros.id')->where('carrito.usuario_id', '=', $id)
+        return Carrito::with('libro')->where('carrito.usuario_id', '=', $id)
         ->get();
     }
 

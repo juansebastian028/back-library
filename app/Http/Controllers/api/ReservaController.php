@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Reserva;
+use App\Models\Libro;
 use App\Models\User;
 
 class ReservaController extends Controller
@@ -41,7 +42,25 @@ class ReservaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $reserva = Reserva::create([
+                'libro_id' => $request->libro_id,
+                'usuario_id' => $request->usuario_id,
+                'cantidad' => $request->cantidad,
+                'fecha_reserva' => $request->fecha_reserva,
+                'fecha_expira' => $request->fecha_expira
+            ]);
+
+            $libro = Libro::findOrFail($request->libro_id);
+
+            $libro->update([
+                'cantidad' => $libro->cantidad - $request->cantidad
+            ]);
+    
+            return response()->json($reserva, 200);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 200);
+        }
     }
 
     /**
@@ -66,7 +85,7 @@ class ReservaController extends Controller
             ], 403);
         }
 
-        return Pedido::select("reservas.id", "cantidad", "fecha_expira", "fecha_reserva")
+        return Reserva::select("reservas.id", "reservas.cantidad", "fecha_expira", "fecha_reserva")
         ->join('libros', 'reservas.libro_id', '=', 'libros.id')->where('reservas.usuario_id', '=', $id)
         ->get();
     }
@@ -110,6 +129,13 @@ class ReservaController extends Controller
                 'message' => 'Reserva no encotrada.'
             ], 403);
         }
+
+        $libro = Libro::findOrFail($reserva->libro_id);
+
+        $libro->update([
+            'cantidad' => $libro->cantidad + $reserva->cantidad
+        ]);
+
         $reserva->delete();
         return response()->json(['message'=>'Reserva eliminada correctamente.'], 200);
     }
