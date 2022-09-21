@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Carrito;
+use App\Models\Favoritos;
+use App\Models\User;
 
 class FavoritosController extends Controller
 {
@@ -16,9 +17,8 @@ class FavoritosController extends Controller
      */
     public function index()
     {
-        //
-        $carrito = Carrito::all();
-        return response()->json($carrito);
+        $favoritos = Favoritos::with('libro','usuario')->get();
+        return response()->json($favoritos);
     }
 
     /**
@@ -39,7 +39,16 @@ class FavoritosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $favorito = Favoritos::create([
+                'libro_id' => $request->libro_id,
+                'usuario_id' => $request->usuario_id
+            ]);
+    
+            return response()->json($favorito, 200);
+        } catch (Exception $e) {
+            return response()->json($e->getMessage(), 200);
+        }
     }
 
     /**
@@ -51,6 +60,19 @@ class FavoritosController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showByUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Shopping cart not found.'
+            ], 403);
+        }
+
+        return Favoritos::with('libro')->where('usuario_id', '=', $id)->get();
     }
 
     /**
@@ -84,6 +106,14 @@ class FavoritosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $favorito = Favoritos::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Favorito not found.'
+            ], 403);
+        }
+        $favorito->delete();
+        return response()->json(['message'=>'Favorito eliminado exitosamente.'], 200);
     }
 }

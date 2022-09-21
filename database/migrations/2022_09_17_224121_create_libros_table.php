@@ -26,7 +26,7 @@ class CreateLibrosTable extends Migration
             $table->integer('precio');
             $table->integer('cantidad');
             $table->string('estado');
-            $table->timestamp('fecha_publicacion')->nullable();
+            $table->timestamp('fecha_publicacion')->useCurrent();
         });
     }
 

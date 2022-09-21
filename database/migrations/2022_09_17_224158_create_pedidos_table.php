@@ -23,7 +23,7 @@ class CreatePedidosTable extends Migration
             $table->integer('precio');
             $table->string('direccion');
             $table->string('ciudad');
-            $table->timestamp('fecha')->nullable();
+            $table->timestamp('fecha')->useCurrent();
         });
     }
 

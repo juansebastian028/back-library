@@ -12,11 +12,10 @@ class Favoritos extends Model
 {
     use HasFactory;
     protected $fillable = [
-        // 'usuario_id',
-        // 'libro_id'
+        'usuario_id',
+        'libro_id'
     ];
 
-    
     public function libro(){
         return $this->belongsTo(Libro::class);
     }

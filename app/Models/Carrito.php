@@ -12,6 +12,8 @@ class Carrito extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'usuario_id',
+        'libro_id',
         'cantidad'
     ];
     protected $table = 'carrito';
