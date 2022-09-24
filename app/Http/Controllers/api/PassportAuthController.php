@@ -6,15 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 
 class PassportAuthController extends Controller
 {
     public function register(Request $request)
     {
-        if($image = $request->file('img')){
-            $img_name = $image->getClientOriginalName();
-            $image->move('uploads', $image->getClientOriginalName());
-        }
+        // if($image = $request->file('img')){
+        //     $img_name = $image->getClientOriginalName();
+        //     $image->move('uploads', $image->getClientOriginalName());
+        // }
 
         $user = User::create([
             'cedula'=> $request->cedula,
@@ -27,11 +28,13 @@ class PassportAuthController extends Controller
             'noticias'=> $request->noticias,
             'nombre_usuario'=> $request->nombre_usuario,
             'password'=> bcrypt($request->password),
-            'foto'=> asset('/uploads/' . $img_name),
+            // 'foto'=> asset('/uploads/' . $img_name),
         ]);
         $rol = $user->rol()->first();
 
         $token = $this->createToken($user);
+
+        event(new Registered($user));
 
         return response()->json([
             'token' => $token->accessToken,
