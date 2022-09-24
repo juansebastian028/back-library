@@ -34,6 +34,7 @@ Route::middleware(['auth:api', 'rol'])->group(function() {
     
     Route::middleware(['scope:admin'])
     ->group(function() {
+        Route::get('/libros/historialLibros', [LibroController::class, 'historialLibros']);
         Route::resource('/libros', LibroController::class);
     });
 

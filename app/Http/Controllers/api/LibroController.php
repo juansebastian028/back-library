@@ -16,8 +16,13 @@ class LibroController extends Controller
      */
     public function index()
     {
-        //
-        $libros = Libro::all();
+        $libros = Libro::where('estado', '=', 'A')->get();
+        return response()->json($libros);
+    }
+
+    public function historialLibros()
+    {
+        $libros = Libro::where('estado', '=', 'I')->get();
         return response()->json($libros);
     }
 
@@ -39,7 +44,28 @@ class LibroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($image = $request->file('img')){
+            $img_name = $image->getClientOriginalName();
+            $image->move('uploads', $image->getClientOriginalName());
+            $request->img = asset('/uploads/' . $img_name);
+        }
+
+        $libro = Libro::create([
+            "titulo" => $request->titulo,
+            "autor" => $request->autor,
+            "anio" => $request->anio,
+            "genero" => $request->genero,
+            "paginas" => $request->paginas,
+            "editorial" => $request->editorial,
+            "ISSN" => $request->ISSN,
+            "idioma" => $request->idioma,
+            "precio" => $request->precio,
+            "cantidad" => $request->cantidad,
+            "estado" => $request->estado,
+            "img" => $request->img
+        ]);
+
+        return response()->json($libro, 200);
     }
 
     /**
@@ -73,7 +99,38 @@ class LibroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $libro = Libro::findOrFail($id);
+            
+            if($image = $request->file('img')){
+                $img_name = $image->getClientOriginalName();
+                $image->move('uploads', $image->getClientOriginalName());
+                $request->img = asset('/uploads/' . $img_name);
+            }
+    
+            $libro->update([
+                "titulo" => $request->titulo,
+                "autor" => $request->autor,
+                "anio" => $request->anio,
+                "genero" => $request->genero,
+                "paginas" => $request->paginas,
+                "editorial" => $request->editorial,
+                "ISSN" => $request->ISSN,
+                "idioma" => $request->idioma,
+                "precio" => $request->precio,
+                "cantidad" => $request->cantidad,
+                "estado" => $request->estado,
+                "img" => $request->img
+            ]);
+
+            return response()->json([
+                'message' => 'Libro actualizado correctamente.'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Libro no encontrado.'
+            ], 403);
+        }
     }
 
     /**
@@ -84,6 +141,20 @@ class LibroController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $libro = Libro::findOrFail($id);
+            
+            $libro->update([
+                'estado' => 'I'
+            ]);
+
+            return response()->json([
+                'message' => 'Libro eliminado correctamente.'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Libro no encontrado.'
+            ], 403);
+        }
     }
 }
