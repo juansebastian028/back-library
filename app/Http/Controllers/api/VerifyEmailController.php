@@ -30,7 +30,7 @@ class VerifyEmailController extends Controller
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
-
+        // Debe retornar a url en el front (El JSON es provicional)
         return [
             'message'=>'Email has been verified'
         ];

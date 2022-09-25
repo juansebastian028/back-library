@@ -16,6 +16,8 @@ use App\Models\Reserva;
 use App\Models\Favoritos;
 use App\Models\Rol;
 
+use App\Notifications\ResetPasswordNotification;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens;
@@ -78,6 +80,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function favoritos(){
         return $this->hasMany(Favoritos::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        // Cambiar URL por la ruta de nuestro frontend
+        $url = 'https://spa.test/reset-password?token=' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 
 }
