@@ -85,8 +85,7 @@ class ReservaController extends Controller
             ], 403);
         }
 
-        return Reserva::select("reservas.id", "reservas.cantidad", "fecha_expira", "fecha_reserva")
-        ->join('libros', 'reservas.libro_id', '=', 'libros.id')->where('reservas.usuario_id', '=', $id)
+        return Reserva::with('libro')->where('reservas.usuario_id', '=', $id)
         ->get();
     }
 
