@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\api\PassportAuthController;
+use App\Http\Controllers\api\VerifyEmailController;
+use App\Http\Controllers\api\ForgotPasswordController;
+use App\Http\Controllers\api\ResetPasswordController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\PedidoController;
 use App\Http\Controllers\api\ReservaController;
@@ -21,8 +24,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login',[PassportAuthController::class, 'login']);
-Route::post('/registro',[PassportAuthController::class, 'register']);
+Route::post('/login', [PassportAuthController::class, 'login']);
+Route::post('/registro', [PassportAuthController::class, 'register']);
+
+Route::post('/email/verification-notification', [VerifyEmailController::class, 'sendVerificationEmail'])->name('verification.send');
+Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
+
+Route::post('password/forgot-password', [ForgotPasswordController::class, 'sendResetLinkResponse'])->name('passwords.sent');
+Route::post('password/reset', [ResetPasswordController::class, 'sendResetResponse'])->name('passwords.reset');
 
 Route::middleware(['auth:api', 'rol'])->group(function() {
     
