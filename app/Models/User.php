@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 use App\Models\Branch;
-use App\Models\User;
 use App\Models\Carrito;
 use App\Models\Pedido;
 use App\Models\Reserva;
