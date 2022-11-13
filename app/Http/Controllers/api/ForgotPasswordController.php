@@ -25,9 +25,9 @@ class ForgotPasswordController extends Controller
         $response =  Password::sendResetLink($input);
 
         if ($response == Password::RESET_LINK_SENT) {
-            $message = "Mail send successfully";
+            $message = "Correo enviado con éxito";
         } else {
-            $message = "Email could not be sent to this email address";
+            $message = "No se pudo enviar el correo";
         }
 
         $response = ['data' => '', 'message' => $message];
