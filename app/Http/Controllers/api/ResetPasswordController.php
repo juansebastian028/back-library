@@ -36,9 +36,9 @@ class ResetPasswordController extends Controller
         });
 
         if ($response == Password::PASSWORD_RESET) {
-            $message = "Password reset successfully";
+            $message = "Restablecimiento de contraseña con éxito";
         } else {
-            $message = "Email could not be sent to this email address";
+            $message = "No se pudo enviar el correo electrónico a esta dirección de correo electrónico";
         }
         $response = ['data'=>'','message' => $message];
         return response()->json($response);
